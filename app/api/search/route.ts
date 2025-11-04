@@ -5,8 +5,12 @@ import {
   fetchMarketplaceFile,
 } from "@/lib/search/github-search";
 import { validateMarketplaces } from "@/lib/search/validator";
-import { mergeMarketplaces } from "@/lib/search/storage";
+import { mergeMarketplaces, writePlugins } from "@/lib/search/storage";
 import { batchFetchStars } from "@/lib/search/github-stars";
+import {
+  extractPluginsFromMarketplaces,
+  aggregatePluginKeywords,
+} from "@/lib/search/plugin-extractor";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300; // 5 minutes max execution time
@@ -94,15 +98,31 @@ export async function GET(request: NextRequest) {
 
     console.log(`Fetched stars for ${Array.from(starMap.values()).filter(s => s !== null).length} repos`);
 
-    // Step 5: Merge with existing marketplaces
+    // Step 5: Extract plugins from marketplaces
+    const allPlugins = extractPluginsFromMarketplaces(marketplacesWithStars, validFiles);
+    console.log(`Extracted ${allPlugins.length} plugins from ${marketplacesWithStars.length} marketplaces`);
+
+    // Step 5.5: Aggregate plugin keywords for searchability
+    const marketplacesWithKeywords = marketplacesWithStars.map((marketplace) => {
+      const marketplacePlugins = allPlugins.filter((p) => p.marketplace === marketplace.slug);
+      const pluginKeywords = aggregatePluginKeywords(marketplacePlugins);
+      return { ...marketplace, pluginKeywords };
+    });
+    console.log(`Aggregated keywords for ${marketplacesWithKeywords.length} marketplaces`);
+
+    // Step 6: Merge with existing marketplaces
     const allDiscoveredRepos = new Set(searchResults.map((r) => r.repo));
-    const mergeResult = await mergeMarketplaces(marketplacesWithStars, allDiscoveredRepos);
+    const mergeResult = await mergeMarketplaces(marketplacesWithKeywords, allDiscoveredRepos);
 
     console.log(
       `Search complete: ${mergeResult.added} added, ${mergeResult.updated} updated, ${mergeResult.removed} removed`
     );
 
-    // Step 6: Revalidate the home page to show updated content immediately
+    // Step 7: Write plugins to storage
+    await writePlugins(allPlugins);
+    console.log(`Saved ${allPlugins.length} plugins to storage`);
+
+    // Step 8: Revalidate the home page to show updated content immediately
     try {
       revalidatePath('/', 'page');
       console.log("Successfully revalidated home page");
@@ -121,6 +141,7 @@ export async function GET(request: NextRequest) {
       updated: mergeResult.updated,
       removed: mergeResult.removed,
       total: mergeResult.total,
+      plugins: allPlugins.length,
       failed: failedValidations.length,
       errors: failedValidations.slice(0, 10).map((f) => ({
         errors: f.errors,
