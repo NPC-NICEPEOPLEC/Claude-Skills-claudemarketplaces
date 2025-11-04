@@ -1,10 +1,40 @@
 # CLAUDE.md
 
+Be extremely concise. Sacrifice grammar for the sake of concision.
+
+Always deploy sub-agents to for implementation. Use main context window to track the input and output of the sub-agents.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
 This is a Next.js 15 application built with TypeScript, React 19, and Tailwind CSS v4. The project uses the Next.js App Router architecture with Turbopack for fast development builds. **Bun is the package manager for this project.**
+
+## Documentation
+
+**IMPORTANT: Before implementing new features or making changes, please review the comprehensive documentation in `/docs`:**
+
+- **[Documentation Overview](/docs/README.md)** - Start here for a complete introduction
+- **[Architecture](/docs/architecture.md)** - System design, technology stack, and key design decisions
+- **[Data Flow](/docs/data-flow.md)** - How data moves from GitHub through the system to static pages
+- **[Components](/docs/components.md)** - Component hierarchy, patterns, and UI structure
+- **[Development Guide](/docs/development-guide.md)** - How to add features and make changes
+- **[Troubleshooting](/docs/troubleshooting.md)** - Common issues and solutions
+- **[API Reference](/docs/api-reference.md)** - Function signatures and usage
+
+**Why read the docs first?**
+
+- Understand existing patterns and conventions
+- Avoid common pitfalls (especially data sync issues)
+- Learn how the search script and static generation work together
+- Save time by following established patterns
+
+**Quick decision tree:**
+
+1. Adding a new feature? → Read [Development Guide](/docs/development-guide.md)
+2. Something broken? → Check [Troubleshooting](/docs/troubleshooting.md)
+3. Need to understand data flow? → See [Data Flow](/docs/data-flow.md)
+4. Looking for a specific function? → Check [API Reference](/docs/api-reference.md)
 
 ## Development Commands
 
