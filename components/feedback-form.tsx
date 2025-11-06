@@ -69,7 +69,7 @@ export function FeedbackForm() {
         return;
       }
 
-      const data = await response.json();
+      await response.json();
       setIsSuccess(true);
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
@@ -210,7 +210,7 @@ export function FeedbackForm() {
       </Button>
 
       <p className="text-xs text-muted-foreground text-center">
-        We're committed to protecting your privacy. Your feedback will be used
+        We&apos;re committed to protecting your privacy. Your feedback will be used
         solely to improve our service.
       </p>
     </form>

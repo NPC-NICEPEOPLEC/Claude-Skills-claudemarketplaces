@@ -63,7 +63,7 @@ export async function writeFeedbackSubmissions(
     // Write to Vercel Blob (production)
     if (BLOB_TOKEN) {
       const blob = await put(BLOB_PATHNAME, jsonData, {
-        access: "private", // Keep feedback private for security
+        access: "public", // Note: Vercel Blob only supports public access
         token: BLOB_TOKEN,
         contentType: "application/json",
         addRandomSuffix: false,

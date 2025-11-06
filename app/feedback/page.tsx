@@ -28,20 +28,20 @@ export default function FeedbackPage() {
         <div className="container mx-auto px-4 py-12 max-w-2xl">
           <Card>
             <CardHeader>
-              <CardTitle className="text-3xl">We'd Love Your Feedback</CardTitle>
+              <CardTitle className="text-3xl">We&apos;d Love Your Feedback</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="prose prose-sm max-w-none dark:prose-invert">
                 <p className="text-muted-foreground">
-                  We're committed to making Claude Code Marketplaces as helpful
-                  as possible. Your feedback helps us understand what's working
+                  We&apos;re committed to making Claude Code Marketplaces as helpful
+                  as possible. Your feedback helps us understand what&apos;s working
                   well and where we can improve.
                 </p>
                 <p className="text-muted-foreground">
                   Tell us about your struggles while working with Claude Code so
-                  we can find ways to help you solve them. Whether it's a bug,
+                  we can find ways to help you solve them. Whether it&apos;s a bug,
                   a feature request, or just a thought about how we can make
-                  things better — we're open to all feedback.
+                  things better — we&apos;re open to all feedback.
                 </p>
               </div>
 
