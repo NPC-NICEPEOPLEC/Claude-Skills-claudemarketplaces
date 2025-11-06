@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Playfair_Display, Comfortaa, Space_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
@@ -112,6 +113,18 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${comfortaa.variable} ${spaceMono.variable} ${bbhSans.variable} antialiased`}
       >
+        <Script
+          data-name="BMC-Widget"
+          data-cfasync="false"
+          src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+          data-id="mertduzgun"
+          data-description="Support me on Buy me a coffee!"
+          data-message="If you find this directory helpful, consider supporting me to build more features for boosting your Claude Code workflow!"
+          data-color="#FF813F"
+          data-position="Right"
+          data-x_margin="18"
+          data-y_margin="18"
+        />
         {children}
         <Analytics />
       </body>
