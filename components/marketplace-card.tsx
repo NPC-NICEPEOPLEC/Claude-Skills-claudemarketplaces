@@ -20,6 +20,7 @@ interface MarketplaceCardProps {
 
 export function MarketplaceCard({ marketplace }: MarketplaceCardProps) {
   const repoUrl = `https://github.com/${marketplace.repo}`;
+  const pluginsUrl = `/plugins/${marketplace.slug}`;
   const installCommand = `/plugin marketplace add ${marketplace.repo}`;
   const [copied, setCopied] = useState(false);
 
@@ -31,28 +32,28 @@ export function MarketplaceCard({ marketplace }: MarketplaceCardProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleExternalLink = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    window.open(repoUrl, "_blank", "noopener,noreferrer");
-  };
-
   return (
-    <Link href={`/plugins/${marketplace.slug}`} className="block h-full">
-      <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50 cursor-pointer overflow-auto">
+    <Card className="relative h-full transition-all hover:shadow-lg hover:border-primary/50 overflow-auto">
         <CardHeader>
           <div className="flex flex-col gap-2">
             <div className="flex items-start justify-between gap-2">
               <CardTitle className="text-xl font-serif line-clamp-2 flex-1 min-w-0 leading-7">
-                {marketplace.repo}
+                <Link
+                  href={pluginsUrl}
+                  className="after:absolute after:inset-0"
+                >
+                  {marketplace.repo}
+                </Link>
               </CardTitle>
-              <button
-                onClick={handleExternalLink}
-                className="flex items-center justify-center shrink-0 h-7 p-1 hover:bg-muted rounded transition-colors"
+              <a
+                href={repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative z-10 flex items-center justify-center shrink-0 h-7 p-1 hover:bg-muted rounded transition-colors"
                 aria-label="View on GitHub"
               >
                 <ExternalLink className="h-4 w-4 text-muted-foreground" />
-              </button>
+              </a>
             </div>
             <div className="flex items-center gap-3">
               {marketplace.stars !== undefined && marketplace.stars > 0 && (
@@ -99,7 +100,7 @@ export function MarketplaceCard({ marketplace }: MarketplaceCardProps) {
                 </code>
                 <button
                   onClick={handleCopy}
-                  className="shrink-0 p-1.5 hover:bg-muted rounded transition-colors cursor-pointer"
+                  className="relative z-10 shrink-0 p-1.5 hover:bg-muted rounded transition-colors cursor-pointer"
                   title="Copy to clipboard"
                 >
                   {copied ? (
@@ -112,7 +113,6 @@ export function MarketplaceCard({ marketplace }: MarketplaceCardProps) {
             </div>
           </div>
         </CardContent>
-      </Card>
-    </Link>
+    </Card>
   );
 }

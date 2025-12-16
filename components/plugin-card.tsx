@@ -33,14 +33,6 @@ export function PluginCard({ plugin }: PluginCardProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSourceLink = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (sourceUrl) {
-      window.open(sourceUrl, "_blank", "noopener,noreferrer");
-    }
-  };
-
   return (
     <Card className="h-full transition-all hover:shadow-lg hover:border-primary/50">
       <CardHeader>
@@ -55,13 +47,15 @@ export function PluginCard({ plugin }: PluginCardProps) {
               </Badge>
             )}
             {sourceUrl && (
-              <button
-                onClick={handleSourceLink}
+              <a
+                href={sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center h-7 p-1 hover:bg-muted rounded transition-colors"
                 aria-label="View source on GitHub"
               >
                 <ExternalLink className="h-4 w-4 text-muted-foreground" />
-              </button>
+              </a>
             )}
           </div>
         </div>
