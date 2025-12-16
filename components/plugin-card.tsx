@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plugin } from "@/lib/types";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, ExternalLink } from "lucide-react";
 import { useState } from "react";
 
 interface PluginCardProps {
@@ -19,12 +19,26 @@ interface PluginCardProps {
 export function PluginCard({ plugin }: PluginCardProps) {
   const [copied, setCopied] = useState(false);
 
+  // Clean up source path and build GitHub URL
+  const sourcePath = plugin.source?.replace(/^\.\//, "") || "";
+  const sourceUrl = sourcePath
+    ? `${plugin.marketplaceUrl}/tree/HEAD/${sourcePath}`
+    : null;
+
   const handleCopy = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     await navigator.clipboard.writeText(plugin.installCommand);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleSourceLink = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (sourceUrl) {
+      window.open(sourceUrl, "_blank", "noopener,noreferrer");
+    }
   };
 
   return (
@@ -34,11 +48,22 @@ export function PluginCard({ plugin }: PluginCardProps) {
           <CardTitle className="text-lg font-serif line-clamp-2 flex-1 min-w-0">
             {plugin.name}
           </CardTitle>
-          {plugin.version && (
-            <Badge variant="outline" className="text-xs shrink-0">
-              v{plugin.version}
-            </Badge>
-          )}
+          <div className="flex items-center gap-1 shrink-0">
+            {plugin.version && (
+              <Badge variant="outline" className="text-xs">
+                v{plugin.version}
+              </Badge>
+            )}
+            {sourceUrl && (
+              <button
+                onClick={handleSourceLink}
+                className="flex items-center justify-center h-7 p-1 hover:bg-muted rounded transition-colors"
+                aria-label="View source on GitHub"
+              >
+                <ExternalLink className="h-4 w-4 text-muted-foreground" />
+              </button>
+            )}
+          </div>
         </div>
         <CardDescription className="line-clamp-3">
           {plugin.description}
